@@ -71,7 +71,22 @@ sealed trait Stream[+A] {
         case _ => empty
     }
 
-    /** Exercise 5.4 - Write */
+    def foldRight[B](z: => B)(f: (A, => B) => B): B = this match {
+        case Cons(h,t) => f(h(), t().foldRight(z)(f))
+        case _ => z
+    }
+
+    def exists2(p: A => Boolean) : Boolean =
+        foldRight(false)((a,b) => p(a) || b)
+
+    /** Exercise 5.4 - Write a forAll function that checks all elements in the
+      * Stream match the given predicate. */
+    def all(p: A => Boolean) : Boolean =
+        foldRight(true)((a,b) => p(a) && b)
+
+    /** Exercise 5.5 - Use foldRight to implement takeWhile */
+    def takeWhile2(p: (() => A) => Boolean): Stream[A] = ???
+
 }
 case object Empty extends Stream[Nothing]
 case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]

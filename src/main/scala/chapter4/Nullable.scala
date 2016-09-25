@@ -1,4 +1,3 @@
-//package fp101.errorhandling
 /**
   * Chapter 4 - Handling errors without exceptions
   */
